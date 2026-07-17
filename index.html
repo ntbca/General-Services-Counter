@@ -280,6 +280,7 @@
             <option value="debtor">債權人申請查調債務人課稅資料 (債權債務)</option>
         </select>
         
+        <!-- 收費提示容器 -->
         <div id="feeHint" class="fee-hint">
             💰 收費標準：每查詢一項資料各為 250 元（財產、所得分開計算）
         </div>
@@ -357,7 +358,7 @@
         ]
     };
 
-    // 模擬各種組合需要帶的檔案資料庫（可依真實法規調整修改）
+    // 應備文件資料庫
     const documentsData = {
         "self": [
             { title: "申請人身分證正本", desc: "查驗後歸還；如為影本請切結與正本相符。" }
@@ -387,8 +388,8 @@
         const identitySelect = document.getElementById("identity");
         const feeHint = document.getElementById("feeHint");
         
-        // 控制收費標準提示顯示
-        if (service === "tax_property") {
+        // 🎯 修正核心：當且僅當選擇「debtor」(債權債務) 時，顯示收費提示
+        if (service === "debtor") {
             feeHint.style.display = "block";
         } else {
             feeHint.style.display = "none";
@@ -427,7 +428,7 @@
             document.getElementById("executionTitle").value = "";
         } else if (identity) {
             execGroup.style.display = "none";
-            generateChecklist(); // 非債權人業務，選完身份直接產出清單
+            generateChecklist(); 
         } else {
             execGroup.style.display = "none";
         }
@@ -442,7 +443,6 @@
 
         if (!identity) return;
         
-        // 如果是債權人業務，必須同時選了執行名義才觸發
         if (service === "debtor" && !execTitle) {
             resultBox.style.display = "none";
             return;
@@ -451,10 +451,8 @@
         container.innerHTML = "";
         resultBox.style.display = "block";
 
-        // 取得該身份的基本應備文件
         let docs = [...(documentsData[identity] || [])];
 
-        // 債權人額外加入執行名義證明文件
         if (service === "debtor" && execTitle) {
             const execSelect = document.getElementById("executionTitle");
             const selectedText = execSelect.options[execSelect.selectedIndex].text;
@@ -464,7 +462,6 @@
             });
         }
 
-        // 渲染畫面
         docs.forEach((doc, index) => {
             const item = document.createElement("div");
             item.className = "checklist-item";
