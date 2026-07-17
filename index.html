@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全功能櫃檯 - 臨櫃查調應備文件預檢系統</title>
+    <style>
+        :root {
+            --primary-color: #005a9c;
+            --primary-light: #eef5fa;
+            --secondary-color: #2e7d32;
+            --accent-color: #d32f2f;
+            --text-color: #333333;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: #f0f4f8;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            border-bottom: 2px dashed #e0e0e0;
+            padding-bottom: 16px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background-color: #ffffff;
+            outline: none;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23005a9c' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(0, 90, 156, 0.2);
+        }
+
+        select:disabled {
+            background-color: #f5f5f5;
+            color: #aaa;
+            border-color: #e0e0e0;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%23aaaaaa' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        }
+
+        /* 專屬收費提示樣式 */
+        .fee-hint {
+            margin-top: 10px;
+            padding: 12px 16px;
+            background-color: #fff1f1;
+            border: 1.5px solid #fecaca;
+            color: var(--accent-color);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .result-box {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-light);
+            border: 1px solid #d0e1f0;
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            border-bottom: 1px solid #d0e1f0;
+            padding-bottom: 8px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            background: #ffffff;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        .checklist-item:active {
+            transform: scale(0.98);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist-text {
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .checklist-text strong {
+            display: block;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .checklist-text span {
+            font-size: 13.5px;
+            color: #555555;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .warning-text {
+            color: var(--accent-color);
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: bold;
+            background-color: #fff1f1;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .alert-info {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #b45309;
+        }
+
+        .alert-info ul {
+            margin-left: 18px;
+            margin-top: 6px;
+        }
+
+        .action-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-line {
+            background-color: #06c755;
+            color: white;
+        }
+
+        .btn-copy {
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn:active {
+            opacity: 0.9;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🏛️ 全功能櫃檯文件預檢系統</h1>
+        <p>多一分準備，少一次奔波！出門前請先檢視</p>
+    </div>
+
+    <!-- 第一步：選擇業務 -->
+    <div class="form-group">
+        <label for="service">1. 請選擇您要申辦的「業務」</label>
+        <select id="service" onchange="updateIdentityOptions()">
+            <option value="">-- 請選擇辦理業務 --</option>
+            <option value="tax_property">所得、財產資料查詢</option>
+            <option value="deceased">被繼承人（死亡親屬）財產及贈與查詢</option>
+            <option value="cert">核發中文/英文所得稅納稅證明書</option>
+            <option value="debtor">債權人申請查調債務人課稅資料 (債權債務)</option>
+        </select>
+        
+        <!-- 🎯 修正：已將收費提示後方的 citation 刪除 -->
+        <div id="feeHint" class="fee-hint">
+            💰 收費標準：每查詢一項資料各為 250 元（財產、所得分開計算）
+        </div>
+    </div>
+
+    <!-- 第二步：選擇身分 (只有債權人時會細分其身分) -->
+    <div class="form-group" id="identityGroup">
+        <label for="identity">2. 請選擇您的「申辦身分」</label>
+        <select id="identity" disabled onchange="updateExecutionTitleOption()">
+            <option value="">-- 請先選擇上方業務 --</option>
+        </select>
+    </div>
+
+    <!-- 第三步：若為債權人，選擇執行名義類型 -->
+    <div class="form-group" id="executionTitleGroup" style="display: none;">
+        <label for="executionTitle">3. 請選擇您持有的「執行名義證明文件」</label>
+        <select id="executionTitle" onchange="generateChecklist()">
+            <option value="">-- 請選擇您所持有的執行名義 --</option>
+            <option value="1">民事判決暨其確定證明書 (含終審判決)</option>
+            <option value="2">支付命令暨其確定證明書</option>
+            <option value="3">債權憑證</option>
+            <option value="4">本票裁定 (司法機關核發准予強制執行)</option>
+            <option value="5">假扣押、假處分、假執行之裁判</option>
+            <option value="6">法院成立之和解筆錄或調解筆錄</option>
+            <option value="7">鄉鎮市調解委員會調解書 (法院核定)</option>
+            <option value="8">得為強制執行之公證書 (依公證法)</option>
+            <option value="9">訴訟費用額之裁定暨其確定證明書</option>
+            <option value="10">仲裁人判斷書暨法院准許執行裁定書 (或符合免裁定要件)</option>
+            <option value="11">其他依法得為強制執行之名義</option>
+        </select>
+    </div>
+
+    <!-- 第四步：產出檢核清單 -->
+    <div id="resultBox" class="result-box">
+        <div class="result-title">📋 您的臨櫃應備文件檢核表：</div>
+        
+        <div id="checklistContainer"></div>
+        
+        <div class="alert-info">
+            <strong>💡 櫃檯溫馨提醒：</strong>
+            <ul>
+                <li>若應備文件載明「影本」，請務必攜帶<strong>「正本」</strong>供櫃檯核對。</li>
+                <li>委託書之簽章需與委託人身分證（或印章）一致。</li>
+            </ul>
+        </div>
+
+        <div class="action-group">
+            <button class="btn btn-copy" onclick="copyChecklist()">📋 複製清單文字</button>
+            <button class="btn btn-line" onclick="shareToLine()">💬 傳送到 LINE</button>
+            <button class="btn btn-primary" onclick="resetF
