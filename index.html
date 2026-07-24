@@ -3,260 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全功能櫃檯 - 臨櫃查調應備文件預檢系統</title>
+    <title>全功能櫃檯 - 臨櫃申辦文件預檢系統</title>
     <style>
         :root {
-            --primary-color: #005a9c;
-            --primary-light: #eef5fa;
-            --secondary-color: #2e7d32;
-            --accent-color: #d32f2f;
-            --text-color: #333333;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --primary-grad: linear-gradient(135deg, #0f4c81 0%, #1f75fe 100%);
+            --gold-grad: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            --gold-border: #f59e0b;
+            --blue-light: #e0f2fe;
+            --blue-border: #0284c7;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --pure-white: #ffffff;
+            --border-radius-lg: 16px;
+            --border-radius-sm: 10px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
-            background-color: #f0f4f8;
-            color: var(--text-color);
+            background: linear-gradient(180deg, #eef2f7 0%, #dbeafe 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
             line-height: 1.6;
-            padding: 16px;
+            padding: 20px 12px;
         }
 
         .container {
             max-width: 650px;
             margin: 0 auto;
-            background: #ffffff;
-            padding: 24px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px 18px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 10px 30px rgba(15, 76, 129, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
-            border-bottom: 2px dashed #e0e0e0;
-            padding-bottom: 16px;
+            background: var(--primary-grad);
+            padding: 20px 16px;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(15, 76, 129, 0.2);
         }
 
         .header h1 {
-            color: var(--primary-color);
+            color: var(--pure-white);
             font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .header p {
-            font-size: 14px;
-            color: #666;
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.85);
         }
 
-        .form-group {
+        .step-card {
             margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        label {
-            display: block;
-            font-weight: bold;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-weight: 800;
             margin-bottom: 8px;
-            color: var(--primary-color);
-            font-size: 15px;
+            color: #0f4c81;
+            font-size: 16px;
         }
 
         select {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #ddd;
-            border-radius: var(--border-radius);
+            padding: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: var(--border-radius-sm);
             font-size: 16px;
-            background-color: #ffffff;
+            font-weight: 600;
+            background-color: var(--pure-white);
+            color: var(--text-main);
             outline: none;
-            transition: all 0.3s ease;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%23005a9c' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%230f4c81' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 14px center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(0, 90, 156, 0.2);
-        }
-
-        select:disabled {
-            background-color: #f5f5f5;
-            color: #aaa;
-            border-color: #e0e0e0;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%23aaaaaa' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            border-color: #1f75fe;
         }
 
         .fee-hint {
-            margin-top: 10px;
             padding: 12px 16px;
-            background-color: #fff1f1;
-            border: 1.5px solid #fecaca;
-            color: var(--accent-color);
-            border-radius: 8px;
+            background: var(--gold-grad);
+            border-left: 5px solid var(--gold-border);
+            color: #b45309;
+            border-radius: var(--border-radius-sm);
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 700;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* 🎯 警示原則醒目提示框 */
+        .self-hint {
+            padding: 14px 16px;
+            background: var(--blue-light);
+            border-left: 6px solid var(--blue-border);
+            color: #0369a1;
+            border-radius: var(--border-radius-sm);
+            font-size: 14.5px;
+            font-weight: 800;
+            margin-top: 10px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
         }
 
         .result-box {
-            margin-top: 24px;
+            margin-top: 15px;
             padding: 20px;
-            border-radius: var(--border-radius);
-            background-color: var(--primary-light);
-            border: 1px solid #d0e1f0;
+            border-radius: var(--border-radius-lg);
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
             display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-color);
+            font-size: 16.5px;
+            font-weight: 800;
+            color: #0f4c81;
             margin-bottom: 16px;
-            border-bottom: 1px solid #d0e1f0;
-            padding-bottom: 8px;
         }
 
         .checklist-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 12px;
-            background: #ffffff;
+            background: var(--pure-white);
             padding: 14px;
-            border-radius: 8px;
+            border-radius: var(--border-radius-sm);
             border: 1px solid #e2e8f0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: transform 0.2s;
-        }
-
-        .checklist-item:active {
-            transform: scale(0.98);
+            cursor: pointer;
         }
 
         .checklist-item input[type="checkbox"] {
-            margin-right: 12px;
-            margin-top: 3px;
-            width: 20px;
-            height: 20px;
+            margin-right: 14px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             flex-shrink: 0;
+            accent-color: #1f75fe;
         }
 
         .checklist-text {
             font-size: 15px;
             cursor: pointer;
             width: 100%;
+            user-select: none;
         }
 
         .checklist-text strong {
             display: block;
-            color: #1a1a1a;
-            margin-bottom: 4px;
+            color: #0f172a;
+            margin-bottom: 2px;
+            font-weight: 700;
         }
 
         .checklist-text span {
-            font-size: 13.5px;
-            color: #555555;
-            display: block;
-            line-height: 1.5;
-        }
-
-        .warning-text {
-            color: var(--accent-color);
-            font-size: 12px;
-            margin-top: 6px;
-            font-weight: bold;
-            background-color: #fff1f1;
-            padding: 6px 10px;
-            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-muted);
             display: block;
             line-height: 1.4;
         }
 
-        .alert-info {
-            background-color: #fffbeb;
-            border: 1px solid #fef3c7;
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #b45309;
-        }
-
-        .alert-info ul {
-            margin-left: 18px;
-            margin-top: 6px;
-        }
-
-        .action-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 14px;
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            grid-column: span 2;
-        }
-
-        .btn-line {
-            background-color: #06c755;
-            color: white;
-        }
-
-        .btn-copy {
-            background-color: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-        }
-
-        .btn:active {
-            opacity: 0.9;
-        }
-
         .footer-note {
             text-align: center;
-            font-size: 11px;
-            color: #999;
+            font-size: 12px;
+            color: var(--text-muted);
             margin-top: 24px;
         }
     </style>
@@ -265,255 +203,195 @@
 
 <div class="container">
     <div class="header">
-        <h1>🏛️ 全功能櫃檯文件預檢系統</h1>
-        <p>多一分準備，少一次奔波！出門前請先檢視</p>
+        <h1>🏛️ 全功能櫃檯臨櫃文件預檢系統</h1>
+        <p>依序選擇項目，自動試算應備文件檢核清單！</p>
     </div>
 
-    <!-- 第一步：選擇業務 -->
-    <div class="form-group">
-        <label for="service">1. 請選擇您要申辦的「業務」</label>
-        <select id="service" onchange="updateIdentityOptions()">
-            <option value="">-- 請選擇辦理業務 --</option>
-            <option value="tax_property">所得、財產資料查詢</option>
-            <option value="deceased">被繼承人（死亡親屬）財產及贈與查詢</option>
-            <option value="cert">核發中文/英文所得稅納稅證明書</option>
-            <option value="debtor">債權人申請查調債務人課稅資料 (債權債務)</option>
+    <!-- 步驟一：選擇單項查詢業務 -->
+    <div class="step-card" id="step1Card">
+        <div class="step-title">步驟 1. 請選擇您要申辦的「查詢項目」：</div>
+        <select id="serviceSelect" onchange="handleServiceChange()">
+            <option value="">-- 請點擊選擇 11 大查詢項目 --</option>
+            <option value="1">1. 所得稅核定資料查詢</option>
+            <option value="2">2. 遺產稅核定資料查詢</option>
+            <option value="3">3. 贈與稅核定資料查詢</option>
+            <option value="4">4. 納稅、欠稅及退稅資料查詢</option>
+            <option value="5">5. 各類所得資料查詢</option>
+            <option value="6">6. 財產歸戶資料查詢</option>
+            <option value="7">7. 被繼承人財產、所得及贈與資料查詢</option>
+            <option value="8">8. 債權人查調債務人課稅資料查詢</option>
+            <option value="9">9. 綜合所得稅稅籍查詢</option>
+            <option value="10">10. 營業人暨扣繳單位稅籍查詢</option>
+            <option value="11">11. 各類所得及財產資料查詢</option>
         </select>
-        
-        <!-- 收費提示容器 -->
+
+        <!-- 債權債務收費提示 -->
         <div id="feeHint" class="fee-hint">
             💰 收費標準：每查詢一項資料各為 250 元（財產、所得分開計算）
         </div>
     </div>
 
-    <!-- 第二步：選擇身分 -->
-    <div class="form-group" id="identityGroup">
-        <label for="identity">2. 請選擇您的「申辦身分」</label>
-        <select id="identity" disabled onchange="updateExecutionTitleOption()">
-            <option value="">-- 請先選擇上方業務 --</option>
+    <!-- 步驟二：選好業務後才顯示「申請人身份」 -->
+    <div class="step-card" id="step2Card" style="display: none;">
+        <div class="step-title">步驟 2. 請選擇您的「申請人身份」：</div>
+        <select id="identitySelect" onchange="handleIdentityChange()">
+            <option value="">-- 請選擇申請人身份 --</option>
+        </select>
+
+        <!-- 🎯 本人辦理警示原則提醒框 -->
+        <div id="selfHint" class="self-hint">
+            📌 警示原則：申請人本人親自辦理請攜帶「國民身分證正本」！
+        </div>
+    </div>
+
+    <!-- 步驟三：債權人案件專用執行名義 -->
+    <div class="step-card" id="step3Card" style="display: none;">
+        <div class="step-title">步驟 3. 請選擇持有的「執行名義證明文件」：</div>
+        <select id="execTitleSelect" onchange="generateChecklist()">
+            <option value="">-- 請點擊選擇執行名義 --</option>
+            <option value="1">1. 司法機關民事判決暨確定證明書 (正影本)</option>
+            <option value="2">2. 司法機關支付命令暨確定證明書 (正影本)</option>
+            <option value="3">3. 司法機關債權憑證 (正影本)</option>
+            <option value="4">4. 本票准予強制執行之民事裁定 (正影本)</option>
+            <option value="5">5. 得為假扣押、假處分、假執行之裁判 (正影本)</option>
+            <option value="6">6. 法院成立之和解筆錄或調解筆錄 (正影本)</option>
+            <option value="7">7. 經法院核定之鄉鎮市調解委員會調解書 (正影本)</option>
+            <option value="8">8. 依公證法規定得為強制執行之公證書 (正影本)</option>
+            <option value="9">9. 仲裁人判斷書暨法院准許執行裁定書 (正影本)</option>
+            <option value="10">10. 訴訟費用額之裁定暨確定證明書 (正影本)</option>
+            <option value="11">11. 其他依法得為強制執行之名義 (正影本)</option>
         </select>
     </div>
 
-    <!-- 第三步：選擇執行名義類型 -->
-    <div class="form-group" id="executionTitleGroup" style="display: none;">
-        <label for="executionTitle">3. 請選擇您持有的「執行名義證明文件」</label>
-        <select id="executionTitle" onchange="generateChecklist()">
-            <option value="">-- 請選擇您所持有的執行名義 --</option>
-            <option value="1">民事判決暨其確定證明書 (含終審判決)</option>
-            <option value="2">支付命令暨其確定證明書</option>
-            <option value="3">債權憑證</option>
-            <option value="4">本票裁定 (司法機關核發准予強制執行)</option>
-            <option value="5">假扣押、假處分、假執行之裁判</option>
-            <option value="6">法院成立之和解筆錄或調解筆錄</option>
-            <option value="7">鄉鎮市調解委員會調解書 (法院核定)</option>
-            <option value="8">得為強制執行之公證書 (依公證法)</option>
-            <option value="9">訴訟費用額之裁定暨其確定證明書</option>
-            <option value="10">仲裁人判斷書暨法院准許執行裁定書 (或符合免裁定要件)</option>
-            <option value="11">其他依法得為強制執行之名義</option>
-        </select>
-    </div>
-
-    <!-- 第四步：產出檢核清單 -->
+    <!-- 步驟四：最終應備文件清單 -->
     <div id="resultBox" class="result-box">
-        <div class="result-title">📋 您的臨櫃應備文件檢核表：</div>
-        
+        <div class="result-title">📋 應備文件清單預檢結果</div>
         <div id="checklistContainer"></div>
-        
-        <div class="alert-info">
-            <strong>💡 櫃檯溫馨提醒：</strong>
-            <ul>
-                <li>若應備文件載明「影本」，請務必攜帶<strong>「正本」</strong>供櫃檯核對。</li>
-                <li>委託書之簽章需與委託人身分證（或印章）一致。</li>
-            </ul>
-        </div>
-
-        <div class="action-group">
-            <button class="btn btn-copy" onclick="copyChecklist()">📋 複製清單文字</button>
-            <button class="btn btn-line" onclick="shareToLine()">💬 傳送到 LINE</button>
-            <button class="btn btn-primary" onclick="resetForm()">🔄 重新填寫</button>
-        </div>
     </div>
-    
-    <div class="footer-note">© 全功能櫃檯文件預檢系統</div>
+
+    <div class="footer-note">
+        本系統僅供臨櫃文件預檢參考，實際辦理仍以現場櫃檯審核為準。
+    </div>
 </div>
 
 <script>
-    // 定義身份選單資料庫
-    const identities = {
-        tax_property: [
-            { value: "self", text: "本人" },
-            { value: "agent", text: "受託代辦人" }
-        ],
-        deceased: [
-            { value: "heir", text: "繼承人" },
-            { value: "executor", text: "遺產管理人/執行人" }
-        ],
-        cert: [
-            { value: "self", text: "本人" },
-            { value: "agent", text: "受託代辦人" }
-        ],
-        debtor: [
-            { value: "creditor", text: "債權人本人" },
-            { value: "creditor_agent", text: "債權人之受託人" }
-        ]
-    };
+    function handleServiceChange() {
+        const service = document.getElementById('serviceSelect').value;
+        const step2Card = document.getElementById('step2Card');
+        const step3Card = document.getElementById('step3Card');
+        const feeHint = document.getElementById('feeHint');
+        const identitySelect = document.getElementById('identitySelect');
+        const resultBox = document.getElementById('resultBox');
 
-    // 應備文件資料庫
-    const documentsData = {
-        "self": [
-            { title: "申請人身分證正本", desc: "查驗後歸還；如為影本請切結與正本相符。" }
-        ],
-        "agent": [
-            { title: "委任書/授權書正本", desc: "需有委任人與受任人雙方簽章。" },
-            { title: "申請人身分證影本", desc: "需由受任人切結與正本相符。" },
-            { title: "受任人身分證正本", desc: "查驗後歸還。" }
-        ],
-        "heir": [
-            { title: "繼承人身分證正本", desc: "查驗後歸還。" },
-            { title: "載有被繼承人死亡記事之戶籍謄本或死亡證明", desc: "正影本皆可。" },
-            { title: "與被繼承人之關係證明文件", desc: "如足資證明關係之現戶戶籍謄本。" }
-        ],
-        "creditor": [
-            { title: "債權人身分證明文件", desc: "自然人請帶身分證正本；法人請帶登記證明文件。" }
-        ],
-        "creditor_agent": [
-            { title: "委任書/授權書正本", desc: "需加蓋債權人印章及受任人簽章。" },
-            { title: "債權人身分證明文件影本", desc: "需加蓋與正本相符戳記。" },
-            { title: "受任人身分證正本", desc: "查驗後歸還。" }
-        ]
-    };
+        // 重置狀態
+        step2Card.style.display = 'none';
+        step3Card.style.display = 'none';
+        resultBox.style.display = 'none';
+        identitySelect.innerHTML = '<option value="">-- 請選擇申請人身份 --</option>';
 
-    function updateIdentityOptions() {
-        const service = document.getElementById("service").value;
-        const identitySelect = document.getElementById("identity");
-        const feeHint = document.getElementById("feeHint");
-        
-        // 🎯 修正核心：當且僅當選擇「debtor」(債權債務) 時，顯示收費提示
-        if (service === "debtor") {
-            feeHint.style.display = "block";
+        if (!service) return;
+
+        // 債權人項目提示收費
+        if (service === '8') {
+            feeHint.style.display = 'block';
         } else {
-            feeHint.style.display = "none";
+            feeHint.style.display = 'none';
         }
 
-        // 初始化狀態
-        identitySelect.innerHTML = '<option value="">-- 請選擇您的申辦身分 --</option>';
-        document.getElementById("executionTitleGroup").style.display = "none";
-        document.getElementById("executionTitle").value = "";
-        document.getElementById("resultBox").style.display = "none";
-
-        if (service) {
-            identitySelect.disabled = false;
-            const options = identities[service] || [];
-            options.forEach(item => {
-                const opt = document.createElement("option");
-                opt.value = item.value;
-                opt.textContent = item.text;
-                identitySelect.appendChild(opt);
-            });
+        // 動態帶入步驟二選項
+        let options = [];
+        if (service === '8') {
+            options = [{ val: 'self', text: '債權人本人（或代理人）' }];
         } else {
-            identitySelect.disabled = true;
-            identitySelect.innerHTML = '<option value="">-- 請先選擇上方業務 --</option>';
+            options = [
+                { val: 'self', text: '本人' },
+                { val: 'agent', text: '委託代理人' },
+                { val: 'heir', text: '繼承人' }
+            ];
         }
+
+        options.forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt.val;
+            el.textContent = opt.text;
+            identitySelect.appendChild(el);
+        });
+
+        step2Card.style.display = 'block';
     }
 
-    function updateExecutionTitleOption() {
-        const service = document.getElementById("service").value;
-        const identity = document.getElementById("identity").value;
-        const execGroup = document.getElementById("executionTitleGroup");
+    function handleIdentityChange() {
+        const service = document.getElementById('serviceSelect').value;
+        const identity = document.getElementById('identitySelect').value;
+        const step3Card = document.getElementById('step3Card');
+        const selfHint = document.getElementById('selfHint');
         
-        document.getElementById("resultBox").style.display = "none";
+        step3Card.style.display = 'none';
 
-        if (service === "debtor" && identity) {
-            execGroup.style.display = "block";
-            document.getElementById("executionTitle").value = "";
-        } else if (identity) {
-            execGroup.style.display = "none";
-            generateChecklist(); 
+        if (!identity) {
+            selfHint.style.display = 'none';
+            document.getElementById('resultBox').style.display = 'none';
+            return;
+        }
+
+        if (identity === 'self') {
+            selfHint.style.display = 'block';
         } else {
-            execGroup.style.display = "none";
+            selfHint.style.display = 'none';
+        }
+
+        if (service === '8') {
+            step3Card.style.display = 'block';
+        } else {
+            generateChecklist();
         }
     }
 
     function generateChecklist() {
-        const identity = document.getElementById("identity").value;
-        const service = document.getElementById("service").value;
-        const execTitle = document.getElementById("executionTitle").value;
-        const container = document.getElementById("checklistContainer");
-        const resultBox = document.getElementById("resultBox");
+        const service = document.getElementById('serviceSelect').value;
+        const identity = document.getElementById('identitySelect').value;
+        const execTitle = document.getElementById('execTitleSelect').value;
+        const resultBox = document.getElementById('resultBox');
+        const checklistContainer = document.getElementById('checklistContainer');
 
-        if (!identity) return;
-        
-        if (service === "debtor" && !execTitle) {
-            resultBox.style.display = "none";
+        if (service === '8' && !execTitle) {
+            resultBox.style.display = 'none';
             return;
         }
 
-        container.innerHTML = "";
-        resultBox.style.display = "block";
+        let items = [];
 
-        let docs = [...(documentsData[identity] || [])];
-
-        if (service === "debtor" && execTitle) {
-            const execSelect = document.getElementById("executionTitle");
-            const selectedText = execSelect.options[execSelect.selectedIndex].text;
-            docs.push({
-                title: selectedText + " 正本與影本",
-                desc: "正本核對後發還，影本由櫃檯留存。證明書需有確定證明。"
-            });
+        if (identity === 'self') {
+            items.push({ title: '申請人身分證正本', desc: '查驗後退還' });
+        } else if (identity === 'agent') {
+            items.push({ title: '申請人身分證影本', desc: '請加註與正本相符字樣' });
+            items.push({ title: '代理人身分證正本', desc: '查驗後退還' });
+            items.push({ title: '授權書 / 委託書', desc: '須由申請人簽章' });
+        } else if (identity === 'heir') {
+            items.push({ title: '繼承人身分證正本', desc: '查驗後退還' });
+            items.push({ title: '被繼承人除戶謄本或死亡證明', desc: '正本或影本' });
+            items.push({ title: '與被繼承人關係證明文件', desc: '如戶籍謄本' });
         }
 
-        docs.forEach((doc, index) => {
-            const item = document.createElement("div");
-            item.className = "checklist-item";
-            item.innerHTML = `
-                <input type="checkbox" id="chk_${index}">
-                <div class="checklist-text" onclick="document.getElementById('chk_${index}').click()">
-                    <strong>${doc.title}</strong>
-                    <span>${doc.desc}</span>
+        if (service === '8') {
+            items.push({ title: '執行名義證明文件', desc: '正本及影本各一份' });
+        }
+
+        let html = '';
+        items.forEach((item, index) => {
+            html += `
+                <div class="checklist-item">
+                    <input type="checkbox" id="item_${index}">
+                    <label class="checklist-text" for="item_${index}">
+                        <strong>${item.title}</strong>
+                        <span>${item.desc}</span>
+                    </label>
                 </div>
             `;
-            container.appendChild(item);
         });
-    }
 
-    function copyChecklist() {
-        const serviceText = document.getElementById("service").options[document.getElementById("service").selectedIndex].text;
-        const identityText = document.getElementById("identity").options[document.getElementById("identity").selectedIndex].text;
-        let text = `【臨櫃應備文件檢核結果】\n業務：${serviceText}\n身分：${identityText}\n\n應備文件清單：\n`;
-        
-        const items = document.querySelectorAll(".checklist-item");
-        items.forEach((item, idx) => {
-            const title = item.querySelector("strong").innerText;
-            const desc = item.querySelector("span").innerText;
-            text += `${idx + 1}. ${title} (${desc})\n`;
-        });
-        
-        text += "\n💡 櫃檯提醒：影本請攜帶正本核對，委託書簽章需與身分證一致。";
-
-        navigator.clipboard.writeText(text).then(() => {
-            alert("清單文字已成功複製到剪貼簿！");
-        }).catch(() => {
-            alert("複製失敗，請手動全選複製。");
-        });
-    }
-
-    function shareToLine() {
-        const serviceText = document.getElementById("service").options[document.getElementById("service").selectedIndex].text;
-        const identityText = document.getElementById("identity").options[document.getElementById("identity").selectedIndex].text;
-        let text = `【臨櫃應備文件檢核】\n業務：${serviceText}\n身分：${identityText}\n\n`;
-        
-        const items = document.querySelectorAll(".checklist-item");
-        items.forEach((item, idx) => {
-            text += `▪️ ${item.querySelector("strong").innerText}\n`;
-        });
-        
-        const encodeText = encodeURIComponent(text);
-        window.open(`https://line.me/R/msg/text/?${encodeText}`, '_blank');
-    }
-
-    function resetForm() {
-        document.getElementById("service").value = "";
-        updateIdentityOptions();
+        checklistContainer.innerHTML = html;
+        resultBox.style.display = 'block';
     }
 </script>
 
