@@ -401,6 +401,7 @@
     function renderChecklist() {
         const itemVal = document.getElementById("itemSelect").value;
         const identityVal = document.getElementById("identitySelect").value;
+        const executionSelect = document.getElementById("executionSelect");
         const isAgent = document.getElementById("isAgent").checked;
         const resultBox = document.getElementById("resultBox");
         const docList = document.getElementById("docList");
@@ -421,12 +422,18 @@
 
         let docs = [...selectedOpt.docs];
 
-       if (isAgent) {
-            docs.push("代理人國民身分證正本");
-            docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/5091161354246138343" target="_blank">（點選可至稅務入口網下載）</a>');
+        // 🌟 新增：如果是債權人查詢，將第 3 欄（執行名義種類）選中的文字加入清單中
+        if (itemVal === "creditor_data" && executionSelect.selectedIndex >= 0) {
+            const executionText = executionSelect.options[executionSelect.selectedIndex].text;
+            docs.push("執行名義： " + executionText);
         }
 
-       docList.innerHTML = "";
+        if (isAgent) {
+            docs.push("代理人國民身分證正本");
+            docs.push('<a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/5091161354246138343" target="_blank">申請人（或委託人）授權委託書正本</a>');
+        }
+
+        docList.innerHTML = "";
         docs.forEach(doc => {
             const li = document.createElement("li");
             li.innerHTML = doc;
