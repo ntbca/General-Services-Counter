@@ -212,6 +212,13 @@
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
+        .item-note {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #dc3545; /* 預設使用紅色醒目，若要灰色可改為 #6c757d */
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -236,6 +243,8 @@
             <option value="business_reg">營業人暨扣繳單位稅籍查詢 (跨區局)</option>
             <option value="gift_tax">全國贈與資料查詢 (跨區局)</option>
         </select>
+
+        <small class="item-note">※「跨轄區」：表示設籍中部五縣市之納稅義務人，可洽詢所轄分局、稽徵所辦理。\n※「跨區局」：表示無論設籍何處之納稅義務人，可洽詢全國任一國稅局、分局、稽徵所辦理。</small>
     </div>
 
     <!-- 步驟二：選擇身分／類別 -->
