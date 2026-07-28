@@ -201,6 +201,17 @@
             .action-btn-group { flex-direction: column; }
             .btn-line, .btn-copy { width: 100%; justify-content: center; text-align: center; }
         }
+        .info-image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .info-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -272,6 +283,9 @@
             <button class="btn-line" onclick="shareToLine()">💬 分享清單至 LINE</button>
             <button class="btn-copy" onclick="copyChecklist()">📋 複製清單內容</button>
         </div>
+        <div class="info-image-container">
+            <img id="infoImg" src="" alt="流程圖" class="info-image" style="display: none;">
+        </div>
     </div>
 
     <div class="footer-info">
@@ -318,7 +332,7 @@
         deceased_data: {
             title: "被繼承人財產、所得及贈與資料查詢",
             options: [
-                { id: "successor", name: "繼承人申請", docs: ["繼承人親辦：請攜帶身分證正本。 委辦：需帶申請人身分證正本或正反面影本。", "被繼承人死亡診斷書或載有死亡日期之戶口名簿正本", "與被繼承人親屬關係證明文件（如戶口名簿或詳細記事之戶籍謄本）"] }
+                { id: "successor", name: "繼承人申請", docs: ["繼承人親辦：請攜帶身分證正本。 委辦：需帶申請人身分證正本或正反面影本。", "被繼承人死亡診斷書或載有死亡日期之戶口名簿正本", "與被繼承人親屬關係證明文件（如戶口名簿或詳細記事之戶籍謄本）"],img: "流程圖.jpg" }
             ]
         },
         creditor_data: {
@@ -445,6 +459,13 @@
             specialNotes.style.display = "block";
         } else {
             specialNotes.style.display = "none";
+        }
+        if (selectedOpt.img) {
+            infoImg.src = selectedOpt.img;
+            infoImg.style.display = "inline-block";
+        } else {
+            infoImg.src = "";
+            infoImg.style.display = "none";
         }
 
         resultBox.style.display = "block";
