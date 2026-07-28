@@ -425,7 +425,7 @@
         // 🌟 新增：如果是債權人查詢，將第 3 欄（執行名義種類）選中的文字加入清單中
         if (itemVal === "creditor_data" && executionSelect.selectedIndex >= 0) {
             const executionText = executionSelect.options[executionSelect.selectedIndex].text;
-            docs.push("執行名義： " + executionText);
+            docs.push(executionText);
         }
 
         if (isAgent) {
