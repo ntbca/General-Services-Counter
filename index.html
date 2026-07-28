@@ -253,8 +253,8 @@
         </select>
     </div>
 
-    <!-- 委任代理核取方塊 -->
-    <div class="checkbox-group">
+    <!-- 委任代理核取方塊 (已新增 id 與 style="display: none;") -->
+    <div class="checkbox-group" id="agentGroup" style="display: none;">
         <label>
             <input type="checkbox" id="isAgent" onchange="renderChecklist()">
             委託他人代理辦理（委任辦理請勾選）
@@ -364,12 +364,16 @@
         const subGroup = document.getElementById("subGroup");
         const identitySelect = document.getElementById("identitySelect");
         const executionGroup = document.getElementById("executionGroup");
+        const agentGroup = document.getElementById("agentGroup");
+        const isAgent = document.getElementById("isAgent");
 
         identitySelect.innerHTML = "";
         
         if (!itemVal || !systemData[itemVal]) {
             subGroup.style.display = "none";
             executionGroup.style.display = "none";
+            agentGroup.style.display = "none";
+            isAgent.checked = false;
             document.getElementById("resultBox").style.display = "none";
             return;
         }
@@ -383,6 +387,7 @@
         });
 
         subGroup.style.display = "block";
+        agentGroup.style.display = "block";
         
         if (itemVal === "creditor_data") {
             executionGroup.style.display = "block";
