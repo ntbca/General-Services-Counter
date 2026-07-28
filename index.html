@@ -473,9 +473,24 @@
         }
 
         text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
+        
         const docListItems = document.querySelectorAll("#docList li");
         docListItems.forEach(item => {
-            text += "✔ " + item.textContent + "\n";
+            // 複製節點避免修改到畫面上原本顯示的 HTML
+            let clone = item.cloneNode(true);
+            
+            // 尋找裡面的 <a> 標籤並改為「( 連結：網址 )」
+            const links = clone.querySelectorAll("a");
+            links.forEach(a => {
+                const linkUrl = a.href;
+                if (linkUrl) {
+                    // 移除原本文字，改為帶括號的連結格式
+                    const textNode = document.createTextNode(` ( 連結：${linkUrl} )`);
+                    a.parentNode.replaceChild(textNode, a);
+                }
+            });
+
+            text += "✔ " + clone.textContent + "\n";
         });
 
         const specialNotes = document.getElementById("specialNotes");
