@@ -9,7 +9,6 @@
             --primary-color: #0056b3;
             --secondary-color: #e9ecef;
             --accent-color: #28a745;
-            --line-color: #06C755;
             --dark-color: #333;
             --light-bg: #f8f9fa;
         }
@@ -142,25 +141,6 @@
             flex-wrap: wrap;
         }
 
-        .btn-line {
-            background-color: var(--line-color);
-            color: #fff;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn-line:hover {
-            background-color: #05a847;
-        }
-
         .btn-copy {
             background-color: #6c757d;
             color: #fff;
@@ -199,8 +179,9 @@
             .container { padding: 15px; }
             h1 { font-size: 1.4rem; }
             .action-btn-group { flex-direction: column; }
-            .btn-line, .btn-copy { width: 100%; justify-content: center; text-align: center; }
+            .btn-copy { width: 100%; justify-content: center; text-align: center; }
         }
+
         .info-image-container {
             margin-top: 20px;
             text-align: center;
@@ -212,14 +193,15 @@
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
+
         .item-note {
-    display: block;
-    margin-top: 6px;
-    font-size: 0.85rem;
-    color: #dc3545;
-    line-height: 1.4;
-    white-space: pre-line; /* 🌟 讓 \n 可以在 HTML 生效 */
-}
+            display: block;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #dc3545;
+            line-height: 1.4;
+            white-space: pre-line;
+        }
     </style>
 </head>
 <body>
@@ -288,9 +270,8 @@
         <ul class="doc-list" id="docList"></ul>
         <div class="note" id="specialNotes"></div>
 
-        <!-- 功能按鈕：分享至 LINE & 複製清單文字 -->
+        <!-- 功能按鈕：複製清單文字 -->
         <div class="action-btn-group">
-            <button class="btn-line" onclick="shareToLine()">💬 分享清單至 LINE</button>
             <button class="btn-copy" onclick="copyChecklist()">📋 複製清單內容</button>
         </div>
         <div class="info-image-container">
@@ -304,8 +285,6 @@
 </div>
 
 <script>
-    const PROXY_URL = "https://share.google/nC1vAaPPf8Ozq4mz4";
-
     const systemData = {
         tax_history: {
             title: "各稅核定資料",
@@ -342,7 +321,7 @@
         deceased_data: {
             title: "被繼承人財產、所得及贈與資料查詢",
             options: [
-                { id: "successor", name: "繼承人申請", docs: ["繼承人親辦：請攜帶身分證正本。 委辦：需帶申請人身分證正本或正反面影本。", "被繼承人死亡診斷書或載有死亡日期之戶口名簿正本", "與被繼承人親屬關係證明文件（如戶口名簿或詳細記事之戶籍謄本）", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本。", "死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，其於國外出具之證明文件，應經我國當地駐外機構簽證正本。"],img: "流程圖.jpg" }
+                { id: "successor", name: "繼承人申請", docs: ["繼承人親辦：請攜帶身分證正本。 委辦：需帶申請人身分證正本或正反面影本。", "被繼承人死亡診斷書或載有死亡日期之戶口名簿正本", "與被繼承人親屬關係證明文件（如戶口名簿或詳細記事之戶籍謄本）", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本。", "死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，其於國外出具之證明文件，應經我國當地駐外機構簽證正本。"], img: "流程圖.jpg" }
             ]
         },
         creditor_data: {
@@ -430,6 +409,7 @@
         const resultBox = document.getElementById("resultBox");
         const docList = document.getElementById("docList");
         const specialNotes = document.getElementById("specialNotes");
+        const infoImg = document.getElementById("infoImg");
 
         if (!itemVal || !identityVal) {
             resultBox.style.display = "none";
@@ -446,7 +426,6 @@
 
         let docs = [...selectedOpt.docs];
 
-        // 🌟 新增：如果是債權人查詢，將第 3 欄（執行名義種類）選中的文字加入清單中
         if (itemVal === "creditor_data" && executionSelect.selectedIndex >= 0) {
             const executionText = executionSelect.options[executionSelect.selectedIndex].text;
             docs.push(executionText);
@@ -470,6 +449,7 @@
         } else {
             specialNotes.style.display = "none";
         }
+
         if (selectedOpt.img) {
             infoImg.src = selectedOpt.img;
             infoImg.style.display = "inline-block";
@@ -507,15 +487,12 @@
         
         const docListItems = document.querySelectorAll("#docList li");
         docListItems.forEach(item => {
-            // 複製節點避免修改到畫面上原本顯示的 HTML
             let clone = item.cloneNode(true);
             
-            // 尋找裡面的 <a> 標籤並改為「( 連結：網址 )」
             const links = clone.querySelectorAll("a");
             links.forEach(a => {
                 const linkUrl = a.href;
                 if (linkUrl) {
-                    // 移除原本文字，改為帶括號的連結格式
                     const textNode = document.createTextNode(` ( 連結：${linkUrl} )`);
                     a.parentNode.replaceChild(textNode, a);
                 }
@@ -539,12 +516,6 @@
         }).catch(() => {
             alert("複製失敗，請手動複製。");
         });
-    }
-
-    function shareToLine() {
-        const text = generateFormattedText();
-        const lineUrl = "https://line.me/R/msg/text/?" + encodeURIComponent(text);
-        window.open(lineUrl, "_blank");
     }
 </script>
 </body>
